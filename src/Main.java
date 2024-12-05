@@ -1,15 +1,16 @@
 import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.Date;
+import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
-        File file = new File("test.txt");
+    public static void main(String[] args) throws ClassNotFoundException, IOException {
+        File file = new File("C:\\Users\\GHSalehova\\Desktop\\parent");
         Main main = new Main();
-        main.writeBufferedWriter(file);
+        System.out.println(file.list());
+        //System.out.println(Files.deleteIfExists(file.toPath()));
+        //main.writeFileOutputStreamObject(file);
+       // main.readScanner(file);
 
     }
 
@@ -24,11 +25,63 @@ public class Main {
         fileWriter.append("\nappend");
         fileWriter.close();
     }
+    public void readFileReader(File file) throws IOException {
+        FileReader fileReader = new FileReader(file);
+        int character;
+        while((character = fileReader.read()) != - 1) {
+            System.out.println((char)character);
+        }
+    }
+
+    public void readScanner(File file) throws IOException {
+        Scanner scanner = new Scanner(file);
+        while(scanner.hasNext())
+            System.out.println(scanner.nextLine());
+    }
 
     public void writeBufferedWriter(File file) throws IOException {
         BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));
         bufferedWriter.write("buffer write test", 3, 7);
         bufferedWriter.close();
+    }
+
+    public void readBufferedReader(File file) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+        String line;
+        while ( (line = bufferedReader.readLine()) != null)
+            System.out.println(line);;
+    }
+
+    public void writeFileOutputStream(File file) throws IOException {
+        FileOutputStream fileOutputStream = new FileOutputStream(file, true);
+        fileOutputStream.write("salam".getBytes());
+        System.out.println((char) 17);
+        fileOutputStream.write(17);
+        fileOutputStream.close();
+    }
+
+    public String readFileOutputStream(File file) throws IOException {
+        FileInputStream fileInputStream = new FileInputStream(file);
+        byte[] bytes = fileInputStream.readAllBytes();
+        System.out.println(Arrays.toString(("salam\r" +
+                "necesen?").getBytes()));
+        String str = new String(bytes);
+        return str.replace("\r", "\n");
+    }
+
+    public void writeFileOutputStreamObject(File file) throws IOException {
+        FileOutputStream fileOutputStream = new FileOutputStream(file);
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+        User user = new User(1, "Serxan", "padd55", "gmail", "username");
+        System.out.println("user: " + user);
+        objectOutputStream.writeObject(user);
+        fileOutputStream.close();
+    }
+
+    public User readFileOutputStreamObject(File file) throws IOException, ClassNotFoundException {
+        FileInputStream fileInputStream = new FileInputStream(file);
+        ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+        return (User) objectInputStream.readObject();
     }
 
     public void fileClass() throws IOException {
@@ -59,5 +112,6 @@ public class Main {
         // System.out.println("renameTo: " + file2.renameTo(file4));
         System.out.println("set: " + file2.setLastModified(100000000));
         System.out.println("renameTo: " + file2.toURI());
+
     }
 }
